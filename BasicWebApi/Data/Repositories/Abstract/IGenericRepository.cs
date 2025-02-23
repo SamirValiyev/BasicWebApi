@@ -7,5 +7,6 @@ namespace BasicWebApi.Data.Repositories.Abstract
         Task<IList<T>> GetAllAsync();
         Task<int> SaveChangesAsync();
         Task<T> GetByIdAsync(int id);
+        Task<T> CreateAsync(T entity);
     }
 }

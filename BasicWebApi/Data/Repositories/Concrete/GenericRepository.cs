@@ -14,6 +14,14 @@ namespace BasicWebApi.Data.Repositories.Concrete
             _context = context; 
             _dbSet = _context.Set<T>();
         }
+
+        public async Task<T> CreateAsync(T entity)
+        {
+            await _dbSet.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity;
+        }
+
         public async Task<IList<T>> GetAllAsync()
         {
             var data= await _dbSet.ToListAsync();

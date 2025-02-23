@@ -21,6 +21,7 @@ namespace BasicWebApi.Controllers
             var products = await _productRepository.GetAllAsync();
             return Ok(products);
         }
+       
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById(int id)
         {
@@ -29,7 +30,19 @@ namespace BasicWebApi.Controllers
             {
                 return NotFound();
             }
+           
             return Ok(product);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct(Product product)
+        {
+            var newProduct = await _productRepository.CreateAsync(product);
+            if (string.IsNullOrWhiteSpace(product.ImagePath))
+            {
+                product.ImagePath = null;   
+            }
+            return Created(string.Empty, newProduct);
         }
     }
 }
