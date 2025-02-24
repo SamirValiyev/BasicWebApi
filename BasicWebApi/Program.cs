@@ -19,6 +19,13 @@ builder.Services.AddDbContext<AppDbContext>(opt => {
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddCors(cors =>
+{
+    cors.AddPolicy("CorsPolicy", policy =>
+    {
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    }); 
+});
 
 var app = builder.Build();
 
@@ -30,6 +37,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseStaticFiles();
 
+app.UseCors("CorsPolicy");
 app.UseAuthorization();
 
 app.MapControllers();

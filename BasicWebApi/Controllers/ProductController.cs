@@ -1,10 +1,12 @@
 ﻿using BasicWebApi.Data.Entities;
 using BasicWebApi.Interfaces;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BasicWebApi.Controllers
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -12,7 +14,7 @@ namespace BasicWebApi.Controllers
         private readonly IProductRepository _productRepository;
         public ProductController(IProductRepository productRepository)
         {
-            _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
+             _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
         }
 
         [HttpGet]
@@ -72,11 +74,11 @@ namespace BasicWebApi.Controllers
         [HttpPost("upload")]
         public async Task<IActionResult> Upload(IFormFile file)
         {
-            var newFileName=Guid.NewGuid()+ "." +Path.GetExtension(file.FileName);
-            var path=Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", newFileName);
-            var stream=new FileStream(path,FileMode.Create);
-            await file.CopyToAsync(stream);
-            return Created(string.Empty, file);
+            var newFileName=Guid.NewGuid()+ "." +Path.GetExtension(file.FileName); //umumi faylin adi ve uzantisi
+            var path=Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", newFileName); //proyektin faylinin icinde wwwroot icinde fayli qeyd edir.
+            var stream=new FileStream(path,FileMode.Create); //fayli yaradir
+            await file.CopyToAsync(stream); //gelen fayli wwwroot icine yazir
+            return Created(string.Empty,file);
         }
 
     }
