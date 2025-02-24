@@ -16,7 +16,7 @@ namespace BasicWebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProduct()
+        public async Task<IActionResult> GetAll()
         {
             var products = await _productRepository.GetAllAsync();
             return Ok(products);
@@ -35,7 +35,7 @@ namespace BasicWebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct(Product product)
+        public async Task<IActionResult> Create(Product product)
         {
             var newProduct = await _productRepository.CreateAsync(product);
             if (string.IsNullOrWhiteSpace(product.ImagePath))
@@ -44,5 +44,30 @@ namespace BasicWebApi.Controllers
             }
             return Created(string.Empty, newProduct);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody]Product product)
+        {
+            var checkProduct = await _productRepository.GetByIdAsync(product.Id);
+            if (checkProduct == null)
+            {       
+                return NotFound(product.Id);
+            }
+            await _productRepository.UpdateAsync(product);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var checkProduct = await _productRepository.GetByIdAsync(id);
+            if (checkProduct == null)
+            {
+                return NotFound(id);
+            }
+            await _productRepository.RemoveAsync(id);
+            return NoContent();
+        }
+
     }
 }
