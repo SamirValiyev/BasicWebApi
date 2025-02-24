@@ -1,8 +1,8 @@
-﻿using BasicWebApi.Data.Context;
+﻿using BasicWebApi.Context;
 using BasicWebApi.Data.Entities;
-using BasicWebApi.Data.Repositories.Abstract;
+using BasicWebApi.Interfaces;
 
-namespace BasicWebApi.Data.Repositories.Concrete
+namespace BasicWebApi.Repositories
 {
     public class ProductRepository : GenericRepository<Product>, IProductRepository
     {

@@ -1,18 +1,18 @@
-﻿using BasicWebApi.Data.Common;
-using BasicWebApi.Data.Context;
+﻿using BasicWebApi.Context;
+using BasicWebApi.Data.Common;
 using BasicWebApi.Data.Entities;
-using BasicWebApi.Data.Repositories.Abstract;
+using BasicWebApi.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace BasicWebApi.Data.Repositories.Concrete
+namespace BasicWebApi.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class,IEntityBase
+    public class GenericRepository<T> : IGenericRepository<T> where T : class, IEntityBase
     {
         private readonly AppDbContext _context;
         private readonly DbSet<T> _dbSet;
         public GenericRepository(AppDbContext context)
         {
-            _context = context; 
+            _context = context;
             _dbSet = _context.Set<T>();
         }
 
@@ -25,20 +25,20 @@ namespace BasicWebApi.Data.Repositories.Concrete
 
         public async Task<IList<T>> GetAllAsync()
         {
-            var data= await _dbSet.AsNoTracking().ToListAsync();
+            var data = await _dbSet.AsNoTracking().ToListAsync();
             return data;
         }
 
         public async Task<T> GetByIdAsync(int id)
         {
-            var data =await _dbSet.AsNoTracking().SingleOrDefaultAsync(x=>x.Id==id);
+            var data = await _dbSet.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
             return data;
         }
 
         public async Task RemoveAsync(int id)
         {
             var removedEntity = await _dbSet.FindAsync(id);
-             _dbSet.Remove(removedEntity);
+            _dbSet.Remove(removedEntity);
             await _context.SaveChangesAsync();
         }
 

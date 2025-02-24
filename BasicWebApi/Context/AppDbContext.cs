@@ -1,13 +1,13 @@
 ﻿using BasicWebApi.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace BasicWebApi.Data.Context
+namespace BasicWebApi.Context
 {
-    public class AppDbContext:DbContext
+    public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            
+
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,12 +24,12 @@ namespace BasicWebApi.Data.Context
                         .Property(p => p.Price)
                         .HasColumnType("decimal(16,2)")
                         .IsRequired();
-           
+
             modelBuilder.Entity<Product>()
                         .Property(p => p.Name)
                         .IsRequired()
                         .HasMaxLength(40);
-           
+
 
             modelBuilder.Entity<Product>()
                         .HasData(new Product[]

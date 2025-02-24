@@ -1,5 +1,5 @@
 ﻿using BasicWebApi.Data.Entities;
-using BasicWebApi.Data.Repositories.Abstract;
+using BasicWebApi.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,6 +1,6 @@
-using BasicWebApi.Data.Context;
-using BasicWebApi.Data.Repositories.Abstract;
-using BasicWebApi.Data.Repositories.Concrete;
+using BasicWebApi.Context;
+using BasicWebApi.Interfaces;
+using BasicWebApi.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
