@@ -8,7 +8,6 @@ namespace BasicWebApi.Interfaces
         Task<T> GetByIdAsync(int id);
         Task<T> CreateAsync(T entity);
         Task UpdateAsync(T entity);
-
         Task RemoveAsync(int id);
     }
 }
