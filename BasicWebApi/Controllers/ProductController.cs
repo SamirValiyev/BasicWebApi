@@ -69,5 +69,15 @@ namespace BasicWebApi.Controllers
             return NoContent();
         }
 
+        [HttpPost("upload")]
+        public async Task<IActionResult> Upload(IFormFile file)
+        {
+            var newFileName=Guid.NewGuid()+ "." +Path.GetExtension(file.FileName);
+            var path=Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", newFileName);
+            var stream=new FileStream(path,FileMode.Create);
+            await file.CopyToAsync(stream);
+            return Created(string.Empty, file);
+        }
+
     }
 }
