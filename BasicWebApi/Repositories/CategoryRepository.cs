@@ -15,10 +15,8 @@ namespace BasicWebApi.Repositories
         }
         public async Task<IList<Product>> GetProductsWithCategoryIdAsync(int categoryId)
         {
-            var data = await _context.Category.Include(x => x.Products).SingleOrDefaultAsync(x => x.Id == categoryId);
-            return data?.Products.ToList() ?? new List<Product>();
-           
-
+             var data=await _context.Product.Where(p => p.CategoryId == categoryId).ToListAsync();
+             return data;
         }
     }
 }

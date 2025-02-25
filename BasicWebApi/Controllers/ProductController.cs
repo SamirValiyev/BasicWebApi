@@ -48,7 +48,7 @@ namespace BasicWebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody]Product product)
+        public async Task<IActionResult> Update(Product product)
         {
             var checkProduct = await _productRepository.GetByIdAsync(product.Id);
             if (checkProduct == null)
@@ -74,10 +74,10 @@ namespace BasicWebApi.Controllers
         [HttpPost("upload")]
         public async Task<IActionResult> Upload(IFormFile file)
         {
-            var newFileName=Guid.NewGuid()+ "." +Path.GetExtension(file.FileName); //umumi faylin adi ve uzantisi
-            var path=Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", newFileName); //proyektin faylinin icinde wwwroot icinde fayli qeyd edir.
-            var stream=new FileStream(path,FileMode.Create); //fayli yaradir
-            await file.CopyToAsync(stream); //gelen fayli wwwroot icine yazir
+            var newFileName=Guid.NewGuid()+ "." +Path.GetExtension(file.FileName); 
+            var path=Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", newFileName); 
+            var stream=new FileStream(path,FileMode.Create); 
+            await file.CopyToAsync(stream);
             return Created(string.Empty,file);
         }
 
