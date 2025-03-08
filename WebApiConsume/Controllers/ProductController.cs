@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApiConsume.Models;
 using WebApiConsume.Services;
 
 namespace WebApiConsume.Controllers
 {
-    public class ProductController:Controller
+    public class ProductController : Controller
     {
         private readonly ProductService _productService;
         public ProductController(ProductService productService)
@@ -18,5 +19,26 @@ namespace WebApiConsume.Controllers
             return View(products);
         }
 
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(ProductRequest productRequest)
+        {
+            var products = await _productService.CreateProductAsync(productRequest);
+
+            if (products != null)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["Error"] = "Error creating product";
+                return View(productRequest);
+            }
+        }
     }
 }
