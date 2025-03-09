@@ -14,6 +14,7 @@ namespace WebApiConsume.Services
         {
             _httpClientFactory = httpClientFactory;
         }
+        [HttpGet]
         public async Task<IList<ProductResponse>> GetProductsAsync()
         {
             HttpClient client = _httpClientFactory.CreateClient();
@@ -28,7 +29,7 @@ namespace WebApiConsume.Services
                 return null;
             }
         }
-
+        [HttpPost]
         public async Task<ProductResponse> CreateProductAsync(ProductRequest productRequest)
         {
 
@@ -88,6 +89,24 @@ namespace WebApiConsume.Services
                 return null;
             }
 
+        }
+
+        [HttpGet]
+        public async Task<IList<ProductResponse>> RemoveProductAsync(int id)
+        {
+            HttpClient client = _httpClientFactory.CreateClient();
+            var removeResponse= await client.DeleteAsync($"http://localhost:5046/api/Products/{id}");
+            if(removeResponse.IsSuccessStatusCode)
+            {
+                var getResponse = await client.GetAsync("http://localhost:5046/api/Products");
+                if (getResponse.IsSuccessStatusCode)
+                {
+                    var productsJson=await getResponse.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<IList<ProductResponse>>(productsJson);
+                    
+                }
+            }
+            return new List<ProductResponse>();
         }
     }
 }

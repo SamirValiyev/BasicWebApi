@@ -70,5 +70,15 @@ namespace WebApiConsume.Controllers
                 return View(productResponse);
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deleteProduct=await _productService.RemoveProductAsync(id);
+            if(deleteProduct != null)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(null);
+        }
     }
 }
