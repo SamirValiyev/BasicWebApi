@@ -40,5 +40,35 @@ namespace WebApiConsume.Controllers
                 return View(productRequest);
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            var product = await _productService.UpdateProductAsync(id);
+            if (product != null)
+            {
+                // TempData["Success"] = "Product updated successfully";
+                return View(product);
+            }
+            else
+            {
+                // TempData["Error"] = "Error updating product";
+                return View(null);
+            }
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(ProductResponse productResponse)
+        {
+            var product = await _productService.UpdateProductAsync(productResponse);
+            if (product != null)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["Error"] = "Error updating product";
+                return View(productResponse);
+            }
+        }
     }
 }

@@ -1,0 +1,53 @@
+﻿@model WebApiConsume.Models.ProductResponse
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Update";
+}
+
+<h2>Update</h2>
+
+@{
+    // if (TempData["Error"] != null)
+    // {
+    //     <div class="alert alert-danger" role="alert">
+    //         @TempData["Error"]
+    //     </div>
+    // }
+    // else if (TempData["Success"] != null)
+    // {
+    //     <div class="alert alert-success" role="alert">
+    //         @TempData["Success"]
+    //     </div>
+    // }
+}
+
+
+<form asp-controller="Product" asp-action="Update" method="post">
+
+    
+       <input asp-for="@Model.Id" type="hidden" />
+
+
+    <div class="mb-3">
+        <label asp-for="@Model.Name" class="form-label">Name:</label>
+        <input asp-for="@Model.Name" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="@Model.Stock" class="form-label">Stock:</label>
+        <input asp-for="@Model.Stock" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="@Model.Price" class="form-label">Price:</label>
+        <input asp-for="@Model.Price" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="@Model.CategoryId" class="form-label">CategoryId:</label>
+        <input asp-for="@Model.CategoryId" class="form-control" />
+    </div>
+
+    <a class="btn btn-danger" asp-action="Index" asp-controller="Product">Back</a>
+    <button type="submit" class="btn btn-primary">Save</button>
+
+</form>
