@@ -58,9 +58,9 @@ namespace WebApiConsume.Services
         public async Task<ProductResponse> UpdateProductAsync(int id)
         {
             HttpClient client = _httpClientFactory.CreateClient();
-         
+
             var responseMessage = await client.GetAsync($"http://localhost:5046/api/Products/{id}");
-            if (responseMessage.StatusCode==System.Net.HttpStatusCode.OK)
+            if (responseMessage.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<ProductResponse>(jsonData);
@@ -76,10 +76,10 @@ namespace WebApiConsume.Services
         {
             HttpClient client = _httpClientFactory.CreateClient();
 
-            var jsonData=JsonConvert.SerializeObject(productResponse);
-            var content=new StringContent(jsonData,Encoding.UTF8, "application/json");
+            var jsonData = JsonConvert.SerializeObject(productResponse);
+            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var responseMessage = await client.PutAsync("http://localhost:5046/api/Products", content);
-            if(responseMessage.IsSuccessStatusCode)
+            if (responseMessage.IsSuccessStatusCode)
             {
                 var result = await responseMessage.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<ProductResponse>(result);
@@ -95,18 +95,42 @@ namespace WebApiConsume.Services
         public async Task<IList<ProductResponse>> RemoveProductAsync(int id)
         {
             HttpClient client = _httpClientFactory.CreateClient();
-            var removeResponse= await client.DeleteAsync($"http://localhost:5046/api/Products/{id}");
-            if(removeResponse.IsSuccessStatusCode)
+            var removeResponse = await client.DeleteAsync($"http://localhost:5046/api/Products/{id}");
+            if (removeResponse.IsSuccessStatusCode)
             {
                 var getResponse = await client.GetAsync("http://localhost:5046/api/Products");
                 if (getResponse.IsSuccessStatusCode)
                 {
-                    var productsJson=await getResponse.Content.ReadAsStringAsync();
+                    var productsJson = await getResponse.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject<IList<ProductResponse>>(productsJson);
-                    
+
                 }
             }
             return new List<ProductResponse>();
+        }
+        [HttpPost]
+        public async Task<bool> UploadAsync(IFormFile file)
+        {
+            HttpClient client = _httpClientFactory.CreateClient();
+
+            var stream = new MemoryStream();
+
+            await file.CopyToAsync(stream);
+            var bytes = stream.ToArray();
+            ByteArrayContent content = new ByteArrayContent(bytes);
+            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+            MultipartFormDataContent multiContent = new MultipartFormDataContent();
+            multiContent.Add(content, "file", file.FileName);
+            var response = await client.PostAsync("http://localhost:5046/api/Products/upload", multiContent);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
     }
 }

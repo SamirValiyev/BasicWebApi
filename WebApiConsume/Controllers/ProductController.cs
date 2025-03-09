@@ -73,12 +73,27 @@ namespace WebApiConsume.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var deleteProduct=await _productService.RemoveProductAsync(id);
-            if(deleteProduct != null)
+            var deleteProduct = await _productService.RemoveProductAsync(id);
+            if (deleteProduct != null)
             {
                 return RedirectToAction("Index");
             }
             return View(null);
+        }
+        [HttpGet]
+        public IActionResult Upload()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Upload(IFormFile file)
+        {
+            var upload = await  _productService.UploadAsync(file);
+            if (upload)
+            {
+                return RedirectToAction("Index");
+            }
+            return View();
         }
     }
 }
