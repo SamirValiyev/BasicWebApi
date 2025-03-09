@@ -6,7 +6,7 @@ namespace BasicWebApi.Data.Entities
     public class Product:EntityBase
     {
         [JsonIgnore]
-        public new int Id { get; set; }
+        public override int Id { get; set; }
         public  int Stock { get; set; }
         public decimal Price { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
@@ -14,6 +14,6 @@ namespace BasicWebApi.Data.Entities
         public int? CategoryId { get; set; }
 
         [JsonIgnore]
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
     }
 }

@@ -37,7 +37,7 @@ namespace BasicWebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Product product)
+        public async Task<IActionResult> Create([FromBody]Product product)
         {
             var newProduct = await _productRepository.CreateAsync(product);
             if (string.IsNullOrWhiteSpace(product.ImagePath))

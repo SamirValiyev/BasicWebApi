@@ -28,24 +28,32 @@ namespace WebApiConsume.Services
                 return null;
             }
         }
-        public async Task<ProductRequest> CreateProductAsync(ProductRequest productRequest)
-        {
-            HttpClient client = _httpClientFactory.CreateClient();
-       
-            var jsonData = JsonConvert.SerializeObject(productRequest);
 
+        public async Task<ProductResponse> CreateProductAsync(ProductRequest productRequest)
+        {
+           
+           HttpClient client = _httpClientFactory.CreateClient();
+
+            var jsonData = JsonConvert.SerializeObject(productRequest);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
             var responseMessage = await client.PostAsync("http://localhost:5046/api/Products", content);
 
             if (responseMessage.IsSuccessStatusCode)
             {
                 var result = await responseMessage.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<ProductRequest>(result);
+
+               
+                return JsonConvert.DeserializeObject<ProductResponse>(result);
             }
             else
             {
-                return null;
+                throw new Exception($"API xətası: {responseMessage.StatusCode} - {await responseMessage.Content.ReadAsStringAsync()}");
             }
+           
+           
         }
+
+
     }
 }
