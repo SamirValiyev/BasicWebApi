@@ -112,9 +112,7 @@ namespace WebApiConsume.Services
         public async Task<bool> UploadAsync(IFormFile file)
         {
             HttpClient client = _httpClientFactory.CreateClient();
-
             var stream = new MemoryStream();
-
             await file.CopyToAsync(stream);
             var bytes = stream.ToArray();
             ByteArrayContent content = new ByteArrayContent(bytes);
