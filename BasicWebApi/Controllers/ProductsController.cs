@@ -1,5 +1,6 @@
 ﻿using BasicWebApi.Data.Entities;
 using BasicWebApi.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,7 @@ namespace BasicWebApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var products = await _productRepository.GetAllAsync();
@@ -25,6 +27,7 @@ namespace BasicWebApi.Controllers
         }
        
         [HttpGet("{id}")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> GetProductById(int id)
         {
             var product = await _productRepository.GetByIdAsync(id);
